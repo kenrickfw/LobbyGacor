@@ -61,7 +61,7 @@ public class CharacterSelectPlayer : MonoBehaviour
 
             playerNameText.text = playerData.playerName.ToString();
 
-            playerVisual.SetPlayerColor(GameMultiplayer.Instance.GetPlayerColor(playerData.colorId));
+            //playerVisual.SetPlayerCharacter(GameMultiplayer.Instance.GetPlayerCharacter(playerData.characterId));
         }
         else
         {

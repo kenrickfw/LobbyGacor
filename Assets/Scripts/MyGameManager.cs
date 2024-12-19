@@ -74,6 +74,7 @@ public class MyGameManager : NetworkBehaviour
     {
         foreach (ulong clientId in NetworkManager.Singleton.ConnectedClientsIds)
         {
+            Debug.Log(GameMultiplayer.Instance.GetPlayerDataFromClientId(clientId).characterId);
             Transform playerTransform = Instantiate(playerPrefab, new Vector3(UnityEngine.Random.Range(0, 10), 5, 0), Quaternion.identity);;
             playerTransform.GetComponent<NetworkObject>().SpawnAsPlayerObject(clientId, true);
         }

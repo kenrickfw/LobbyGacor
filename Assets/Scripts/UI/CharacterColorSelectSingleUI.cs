@@ -1,13 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 using UnityEngine.UI;
 
 public class CharacterColorSelectSingleUI : MonoBehaviour
 {
 
 
-    [SerializeField] private int colorId;
+    [SerializeField] private int characterId;
     [SerializeField] private Image image;
     //[SerializeField] private GameObject selectedGameObject;
 
@@ -15,14 +16,14 @@ public class CharacterColorSelectSingleUI : MonoBehaviour
     private void Awake()
     {
         GetComponent<Button>().onClick.AddListener(() => {
-            GameMultiplayer.Instance.ChangePlayerColor(colorId);
+            GameMultiplayer.Instance.ChangePlayerCharacter(characterId);
         });
     }
 
     private void Start()
     {
         GameMultiplayer.Instance.OnPlayerDataNetworkListChanged += GameMultiplayer_OnPlayerDataNetworkListChanged;
-        image.color = GameMultiplayer.Instance.GetPlayerColor(colorId);
+        //image.color = GameMultiplayer.Instance.GetPlayerCharacter(characterId);
         UpdateIsSelected();
     }
 
@@ -33,7 +34,7 @@ public class CharacterColorSelectSingleUI : MonoBehaviour
 
     private void UpdateIsSelected()
     {
-        if (GameMultiplayer.Instance.GetPlayerData().colorId == colorId)
+        if (GameMultiplayer.Instance.GetPlayerData().characterId == characterId)
         {
             //selectedGameObject.SetActive(true);
         }

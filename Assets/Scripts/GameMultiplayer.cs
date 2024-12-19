@@ -26,7 +26,7 @@ public class GameMultiplayer : NetworkBehaviour
 
 
     //[SerializeField] private KitchenObjectListSO kitchenObjectListSO;
-    [SerializeField] private List<Color> playerColorList;
+    [SerializeField] private List<string> playerCharacterList;
 
 
     private NetworkList<PlayerData> playerDataNetworkList;
@@ -99,7 +99,7 @@ public class GameMultiplayer : NetworkBehaviour
         playerDataNetworkList.Add(new PlayerData
         {
             clientId = clientId,
-            colorId = GetFirstUnusedColorId(),
+            characterId = GetFirstUnusedCharacterId(),
         });
         SetPlayerNameServerRpc(GetPlayerName());
         SetPlayerIdServerRpc(AuthenticationService.Instance.PlayerId);
@@ -283,22 +283,23 @@ public class GameMultiplayer : NetworkBehaviour
         return playerDataNetworkList[playerIndex];
     }
 
-    public Color GetPlayerColor(int colorId)
+    public string GetPlayerCharacter(int characterId)
     {
-        return playerColorList[colorId];
+        
+        return playerCharacterList[characterId];
     }
 
-    public void ChangePlayerColor(int colorId)
+    public void ChangePlayerCharacter(int characterId)
     {
-        ChangePlayerColorServerRpc(colorId);
+        ChangePlayerCharacterServerRpc(characterId);
     }
 
     [ServerRpc(RequireOwnership = false)]
-    private void ChangePlayerColorServerRpc(int colorId, ServerRpcParams serverRpcParams = default)
+    private void ChangePlayerCharacterServerRpc(int characterId, ServerRpcParams serverRpcParams = default)
     {
-        if (!IsColorAvailable(colorId))
+        if (!IsCharacterAvailable(characterId))
         {
-            // Color not available
+            // Character not available
             return;
         }
 
@@ -306,16 +307,16 @@ public class GameMultiplayer : NetworkBehaviour
 
         PlayerData playerData = playerDataNetworkList[playerDataIndex];
 
-        playerData.colorId = colorId;
+        playerData.characterId = characterId;
 
         playerDataNetworkList[playerDataIndex] = playerData;
     }
 
-    private bool IsColorAvailable(int colorId)
+    private bool IsCharacterAvailable(int characterId)
     {
         foreach (PlayerData playerData in playerDataNetworkList)
         {
-            if (playerData.colorId == colorId)
+            if (playerData.characterId == characterId)
             {
                 // Already in use
                 return false;
@@ -324,11 +325,11 @@ public class GameMultiplayer : NetworkBehaviour
         return true;
     }
 
-    private int GetFirstUnusedColorId()
+    private int GetFirstUnusedCharacterId()
     {
-        for (int i = 0; i < playerColorList.Count; i++)
+        for (int i = 0; i < playerCharacterList.Count; i++)
         {
-            if (IsColorAvailable(i))
+            if (IsCharacterAvailable(i))
             {
                 return i;
             }
